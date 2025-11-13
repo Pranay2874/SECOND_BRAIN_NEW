@@ -8,8 +8,19 @@ import { JWT_PASSWORD } from "./config";
 import { middleware } from "./middleware";
 import cors from "cors"
 const app = express();
-app.use(cors());
+//app.use(cors());
 app.use(express.json()); // JSON-to-JavaScript-object parser
+const allowedOrigins = [
+    "http://localhost:5173",          
+    "https://second-brain-new-pi.vercel.app/"
+];
+
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 app.post("/api/v1/signup", async(req, res) => {
      const schema = z.object({
