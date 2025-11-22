@@ -6,21 +6,31 @@ import { z } from "zod";
 import { UserModel,contentModel } from "./db";
 import { JWT_PASSWORD } from "./config";
 import { middleware } from "./middleware";
-import cors from "cors"
 const app = express();
 //app.use(cors());
 app.use(express.json()); // JSON-to-JavaScript-object parser
+import cors from "cors";
+
 const allowedOrigins = [
-    "http://localhost:5173",          
-    "https://second-brain-new-pi.vercel.app/"
+    "http://localhost:5173",
+    "https://second-brain-new-pi.vercel.app"
 ];
 
 app.use(cors({
-    origin: allowedOrigins,
+    origin: function(origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("CORS blocked: " + origin));
+        }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
+app.use(express.json());
+
 
 app.post("/api/v1/signup", async(req, res) => {
      const schema = z.object({
