@@ -58,7 +58,7 @@ export const Signup = () => {
 
           <div className="mb-5 relative">
             <LockIcon />
-            <Input ref={passwordRef} placeholder="Password"></Input>
+            <Input ref={passwordRef} placeholder="Password" type="password"></Input>
           </div>
 
           <div className="mb-4 flex justify-center">
